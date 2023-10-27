@@ -22,9 +22,23 @@ client.once(Events.ClientReady, c => {
 
     client.application.commands.create(prayertimes)
 
-    // const set = new SlashCommandBuilder()
-    //     .setName('set')
-    //     .setDescription('Set the city, country and calculation method.')
+    const set = new SlashCommandBuilder()
+        .setName('set')
+        .setDescription('Set the city, country and calculation method.')
+        .addStringOption(option =>
+            option.setName('city')
+                .setDescription('City')
+                .setRequired(true))
+        .addStringOption(option =>
+            option.setName('country')
+                .setDescription('Country')
+                .setRequired(true))
+        .addStringOption(option =>
+            option.setName('method')
+                .setDescription('Method')
+                .setRequired(true));
+
+    client.application.commands.create(set)
 })
 
 client.on(Events.InteractionCreate, interaction => {
@@ -38,10 +52,16 @@ client.on(Events.InteractionCreate, interaction => {
         // interaction.reply("pong");
     }
 
+    const { options } = interaction;
+    const cityN = options.getString('city');
+    const countryN = options.getString('country');
+    const methodN = options.getString('method');
 
     if (interaction.commandName === "set") {
-        citycountry('Toronto', 'Canada', interaction);
-        // interaction.reply("pong");
+        city = cityN
+        country = countryN
+        method = methodN
+        interaction.reply(`City set to: ${cityN} \nCountry set to: ${countryN} \nMethod set to: ${methodN}`)
     }
 })
 
